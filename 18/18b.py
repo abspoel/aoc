@@ -1,17 +1,13 @@
 def tokenize(line):
     token = []
     for ch in line:
-        if ch in ("(", ")", "+", "*"):
-            if token:
-                yield int("".join(token))
-                token = []
-            yield ch
-        if ch.isspace():
-            if token:
-                yield int("".join(token))
-                token = []
-        elif ch.isnumeric():
+        if ch.isnumeric():
             token.append(ch)
+        elif token:
+            yield int("".join(token))
+            token = []
+        if ch in "()+*":
+            yield ch
     if token:
         yield int("".join(token))
 
@@ -29,7 +25,6 @@ def ev_tree(cur):
             cur = cur[:i-1] + [cur[i-1] * cur[i+1]] + cur[i+2:]
         else:
             i += 2
-    print(cur)
     return cur[0]
 
 
